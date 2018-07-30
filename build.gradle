@@ -1,0 +1,91 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.14.RELEASE'
+        springCloudVersion = 'Dalston.SR5'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.0.RELEASE"
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath group: 'com.cinnober.gradle', name: 'semver-git', version: '2.2.1'
+        classpath 'org.owasp:dependency-check-gradle:1.4.5.1'
+    }
+}
+
+// code
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+
+// code quality
+apply plugin: 'jacoco'
+apply plugin: 'org.owasp.dependencycheck'
+
+// IDEs
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+// publishing
+apply plugin: 'com.cinnober.gradle.semver-git'
+
+// XXX please change with your commits according to http://semver.org/
+project.version = '0.1.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { 
+        url "https://jitpack.io" 
+    }
+    maven {
+        url 'https://repo.spring.io/libs-snapshot'
+    }
+}
+
+configurations.all {
+    // check for updates every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+dependencies {
+    compile('com.github.symbiote-h2020:SymbIoTeLibraries:5.+') { changing = true }
+
+    // Spring
+    compile('org.springframework.boot:spring-boot-starter-data-rest')
+    compile('org.springframework.boot:spring-boot-starter-web')
+
+    // test only
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+// code quality below
+task generateJavaDocs(type: Javadoc) {
+    source = sourceSets.main.allJava
+    destinationDir = reporting.file("javadocs")
+}
+
+// jacoco configuration section
+jacoco {
+    toolVersion = "0.7.9"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+// owasp config
+dependencyCheck {
+    outputDirectory = "build/reports/security"
+}
+
+
+// including code quality extensions into the build
+//check.dependsOn(jacocoTestReport, 'dependencyCheck')
+check.dependsOn(jacocoTestReport)

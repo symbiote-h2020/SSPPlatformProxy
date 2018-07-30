@@ -1,0 +1,35 @@
+language: java
+env:
+  global:
+  - GITHUB_REPO=symbiote-h2020/SSPPlatformProxy
+  - secure: sAHnJ2zKE03XQ/LDCGnVxCi/utoyNNGXkLWuz43rbLdFqedsgWzr39vx5Tkw52ZUPeWlcZBsnD0pRNpNM7J/AbbYca7VkEgnDtBnsq6KsCzOBhPX4pag+0M93Jzem48RmaqHU/x/ax1NRy2WkPmGL9sNM4WcPWmLQqC7WwTgvomyWXLsliRkAIr9KyyGIVgEWDubf1LDyNS7kvBIlAy8+V8/fEJupCVKiANWlf+9CPa+Kn722w9wfsrpr2nPIwo/ZKVcI4+wN4rqBxCUypfO4n/a0rxP/cKJ5hBxTpQAlmWsKTDo+341Qzyb26LPbVxYS0gEJptmWkIHOGTkx9mOQ5W4TBfMBOgCPUxnD/7C9PcIntdsRPxJKUU67dIBtvazrkruTPPG6NqxX6xJ++G2X+Pe7h15efHbla/jKC15aOuq2BG+GQVLOJXMoon35wPVudKO5UcVc1tFmWX9zoJ2IK0TemFVRDEM5gCWUO2vu8A3pdpu74Q1fvYbsLRcnP3SSmCRyNO6EHiNio8/G3O/nubIXlqp8xieKJNsuLyoT0oY9DdzYqWqXaQYsmJYyPtNQRyP2uKKNxn4EdnAXY3uJG+mMGTZV57yLulllMXzQCsXejCIVpBULXWf2fGutryTNtOckctr7IvBaCnFN2ykgzQX20hEIjQa2nhKjscxmQc=
+jdk:
+- oraclejdk8
+services:
+- mongodb
+- rabbitmq
+sudo: required
+branches:
+  only:
+  - staging
+install: true
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+before_script:
+- chmod a+x merge_script.sh
+- "./merge_script.sh"
+script:
+- gradle check --refresh-dependencies
+after_success:
+- chmod a+x pushing_script.sh
+- "./pushing_script.sh"
+- bash <(curl -s https://codecov.io/bash)
+notifications:
+  email:
+    on_success: never
+    on_failure: always
