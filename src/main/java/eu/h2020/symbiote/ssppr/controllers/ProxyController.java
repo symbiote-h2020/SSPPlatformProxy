@@ -1,13 +1,13 @@
 package eu.h2020.symbiote.ssppr.controllers;
 
+import eu.h2020.symbiote.client.ssp.feign.SymbIoTeFeignSSPPlatformClientFactory;
+import eu.h2020.symbiote.client.ssp.interfaces.InnkeeperClient;
 import eu.h2020.symbiote.cloud.model.ssp.SspRegInfo;
 import eu.h2020.symbiote.cloud.model.ssp.SspResource;
 import eu.h2020.symbiote.security.commons.exceptions.custom.SecurityHandlerException;
-import eu.h2020.symbiote.ssppr.clients.InnkeeperRegistrationResponse;
-import eu.h2020.symbiote.ssppr.clients.InnkeeperResourceRegistrationResponse;
-import eu.h2020.symbiote.ssppr.clients.InnkeeperRestControllerConstants;
-import eu.h2020.symbiote.ssppr.clients.feign.SymbIoTeFeignSSPPlatformClientFactory;
-import eu.h2020.symbiote.ssppr.clients.interfaces.InnkeeperClient;
+import eu.h2020.symbiote.ssp.constants.InnkeeperRestControllerConstants;
+import eu.h2020.symbiote.ssp.model.InnkeeperRegistrationResponse;
+import eu.h2020.symbiote.ssp.model.InnkeeperResourceRegistrationResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
