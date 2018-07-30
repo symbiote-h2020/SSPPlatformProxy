@@ -139,3 +139,9 @@ target
 # Logs
 logs
 *.log
+
+# Keystores
+*.jks
+
+# Local application.properties
+application.properties

@@ -1,21 +1,19 @@
-package eu.h2020.symbiote.fm;
+package eu.h2020.symbiote.ssppr;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
- * @author RuggenthalerC
+ * @author Vasilis Glykantzis
  *
  *         Main entry point to start spring boot application.
  */
-@EnableDiscoveryClient    
 @EnableAutoConfiguration
 @SpringBootApplication
-public class FederationManagerApplication {
+public class SSPPlatformProxy {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FederationManagerApplication.class, args);
+		SpringApplication.run(SSPPlatformProxy.class, args);
     }
 }
