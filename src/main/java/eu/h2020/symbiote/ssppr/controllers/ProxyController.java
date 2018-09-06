@@ -29,7 +29,8 @@ public class ProxyController {
     public ProxyController(@Value("${symbIoTe.component.keystore.path}") String keystorePath,
                            @Value("${symbIoTe.component.keystore.password}") String keystorePassword,
                            @Value("${ssp.id}") String sspId,
-                           @Value("${symbIoTe.localaam.url}") String localAAMAddress,
+                           @Value("${symbIoTe.ssp.aam.url}") String localAAMAddress,
+                           @Value("${symbIoTe.ssp.base.url}") String sspUrl,
                            @Value("${symbIoTe.component.clientId}") String clientId,
                            @Value("${symbIoTe.component.username}") String componentOwnerUsername,
                            @Value("${symbIoTe.component.password}") String componentOwnerPassword,
@@ -38,7 +39,8 @@ public class ProxyController {
 
         this.innkeeperClient = SymbIoTeFeignSSPPlatformClientFactory.getInnkeeperClient(
                 new SymbIoTeFeignSSPPlatformClientFactory.Config(
-                        keystorePath, keystorePassword, sspId, localAAMAddress, clientId, componentOwnerUsername, componentOwnerPassword
+                        keystorePath, keystorePassword, sspId, localAAMAddress, sspUrl,
+                        clientId, componentOwnerUsername, componentOwnerPassword
                 )
         );
         this.serverValidation = serverValidation;
