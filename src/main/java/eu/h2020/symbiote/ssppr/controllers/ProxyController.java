@@ -11,13 +11,10 @@ import eu.h2020.symbiote.ssp.model.InnkeeperResourceRegistrationResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @CrossOrigin
 @RequestMapping("/ssppr")
 public class ProxyController {
@@ -48,22 +45,31 @@ public class ProxyController {
 
 
     @PostMapping(value = InnkeeperRestControllerConstants.INNKEEPER_PLATFORM_REGISTER_REQUEST_PATH)
-    public InnkeeperRegistrationResponse platform_register(@RequestBody SspRegInfo sspRegInfo) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public InnkeeperRegistrationResponse registerPlatform(@RequestBody SspRegInfo sspRegInfo) {
         logger.debug("REGISTRATION MESSAGE:"+ sspRegInfo);
-        return this.innkeeperClient.registerPlatform(sspRegInfo, serverValidation);
+        InnkeeperRegistrationResponse response = this.innkeeperClient.registerPlatform(sspRegInfo, serverValidation);
+        logger.debug("The response is " + response);
+        return response;
     }
 
     @PostMapping(value = InnkeeperRestControllerConstants.INNKEEPER_PLATFORM_UNREGISTER_REQUEST_PATH)
-    public InnkeeperRegistrationResponse unregister_platform(@RequestBody SspRegInfo sspRegInfo) {
+    @ResponseStatus(HttpStatus.OK)
+    public InnkeeperRegistrationResponse unregisterPlatform(@RequestBody SspRegInfo sspRegInfo) {
         logger.debug("UNREGISTRATION MESSAGE:"+ sspRegInfo);
-        return this.innkeeperClient.unregisterPlatform(sspRegInfo, serverValidation);
+        InnkeeperRegistrationResponse response =  this.innkeeperClient.unregisterPlatform(sspRegInfo, serverValidation);
+        logger.debug("The response is " + response);
+        return response;
     }
 
     // PLATFORM RESOURCE REGISTRATION
     @PostMapping(value = InnkeeperRestControllerConstants.INNKEEPER_PLATFORM_JOIN_REQUEST_PATH)
-    public InnkeeperResourceRegistrationResponse platform_resources(@RequestBody SspResource resource) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public InnkeeperResourceRegistrationResponse registerPlatformResource(@RequestBody SspResource resource) {
         logger.debug("PLATFORM RESOURCE REGISTRATION MESSAGE:"+ resource);
-        return innkeeperClient.registerPlatformResource(resource, serverValidation);
+        InnkeeperResourceRegistrationResponse response =  innkeeperClient.registerPlatformResource(resource, serverValidation);
+        logger.debug("The response is " + response);
+        return response;
     }
 
 }
